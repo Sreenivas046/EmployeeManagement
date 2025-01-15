@@ -8,7 +8,7 @@ namespace EmployeeManagement.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
+    
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _empRepo;
@@ -48,10 +48,10 @@ namespace EmployeeManagement.API.Controllers
         /// <param name="empID">The unique identifier of the employee.</param>
         /// <returns>Returns the details of the employee if found, or a suitable HTTP response.</returns>
         [HttpGet]
-        [Route("GetEmployee/{empID:int}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int empID)
+        [Route("GetEmployee")]
+        public async Task<ActionResult<Employee>> GetEmployee(Guid empID)
         {
-            if (empID <= 0)
+            if (empID == Guid.Empty)
             {
                 return BadRequest("Invalid Employee ID.");
             }
@@ -83,6 +83,7 @@ namespace EmployeeManagement.API.Controllers
                 {
                     return BadRequest("Employee data is required.");
                 }
+                emp.Id = Guid.NewGuid();
                 var employee = await _empRepo.AddEmployeeAsync(emp);
                 if(employee == null)
                 {
@@ -107,21 +108,21 @@ namespace EmployeeManagement.API.Controllers
         [HttpDelete]
         [Route("DeleteEmployee/id")]
         [MapToApiVersion("1.0")]
-        public async Task<ActionResult> DeleteEmployee(int empId)
+        public async Task<ActionResult> DeleteEmployee(Guid empId)
         {
             try
             {
-                if(empId != 0)
+                if (empId != Guid.Empty)
                 {
                     var result = await _empRepo.DeleteEmployeeAsync(empId);
                     if (!result.Success)
                     {
                         return NotFound($"Employee with ID {empId} not found.");
-                        
+
                     }
                     return Ok("Employee Deleted Succesfully");
                 }
-                return BadRequest($"Employee ID should not be zero.");
+                return BadRequest($"Employee ID should not be empty.");
             }
             catch (Exception ex)
             {
@@ -139,11 +140,10 @@ namespace EmployeeManagement.API.Controllers
         [HttpPut]
         [Route("UpdateEmployee/id")]
         [MapToApiVersion("1.0")]
-        public async Task<ActionResult> UpdateEmployee(int empId, Employee emp)
+        public async Task<ActionResult> UpdateEmployee(Guid empId, Employee emp)
         {
             try
             {
-
                 if (empId != emp.Id)
                 {
                     return BadRequest("ID mismatch.");
@@ -154,105 +154,17 @@ namespace EmployeeManagement.API.Controllers
                     return NotFound(result.Message);
                 }
                 return Ok(result);
-
-
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
 
 
         //---------------------------------------------------------------------------------------------------------
 
-        #region  'Version 2' Apis are in progress
-        [HttpGet]
-        [Route("GetEmployees")]
-        [MapToApiVersion("2.0")]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetAllEmployeesV2()
-        {
-            try
-            {
-
-                await Task.CompletedTask;
-                return Ok("List of Employees, Version 2 is in progerss");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
-
-        [HttpPost]
-        [Route("AddEmployee")]
-        [MapToApiVersion("2.0")]
-        public async Task<ActionResult<Employee>> AddEmployeeV2([FromBody] Employee emp)
-        {
-            try
-            {
-                if (emp == null)
-                {
-                    return BadRequest("Employee data is required.");
-                }
-                await Task.CompletedTask;   
-                return Ok("Add Employee Version 2 is inprogress");
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-            }
-
-        }
-
-        [HttpPut]
-        [Route("UpdateEmployee/id")]
-        [MapToApiVersion("2.0")]
-        public async Task<ActionResult> UpdateEmployeeV2(int empId, Employee emp)
-        {
-            try
-            {
-
-                if (empId != emp.Id)
-                {
-                    return BadRequest("ID mismatch.");
-                }
-                await Task.CompletedTask;
-                return Ok("Update Employee Version 2 is inprogress");
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
-
-        [HttpDelete]
-        [Route("DeleteEmployee/id")]
-        [MapToApiVersion("2.0")]
-        public async Task<ActionResult> DeleteEmployeeV2(int empId)
-        {
-            try
-            {
-                if (empId != 0)
-                {
-                    await Task.CompletedTask;
-                    return Ok("Delete Employee Version 2 is inprogress");
-                }
-                return BadRequest($"Employee ID should not be zero.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-            }
-
-        }
-        #endregion
+        
     }
 }

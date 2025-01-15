@@ -13,16 +13,20 @@ namespace EmployeeManagement.DATA.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Address?> GetAddressAsync(int empId)
+        public async Task<Address?> GetAddressAsync(Guid empId)
         {
-            if (empId <= 0)
+            if (empId == Guid.Empty)
             {
-                throw new ArgumentException("Employee ID must be a positive integer.", nameof(empId));
+                throw new ArgumentException("Employee ID must be a valid GUID.", nameof(empId));
             }
 
             try
             {
-                return await _dbContext.Address.FirstOrDefaultAsync(x => x.EmpId == empId);
+                if(await _dbContext.Address.FirstOrDefaultAsync(x => x.Employee.EmpId == empId) == null)
+                {
+                    return new Address();
+                }
+                return await _dbContext.Address.FirstOrDefaultAsync(x => x.Employee.EmpId == empId);
             }
             catch (Exception ex)
             {
@@ -30,16 +34,16 @@ namespace EmployeeManagement.DATA.Services
             }
         }
 
-        public async Task<AddressProof?> GetAddressProofAsync(int empId)
+        public async Task<AddressProof?> GetAddressProofAsync(Guid empId)
         {
-            if (empId <= 0)
+            if (empId == Guid.Empty)
             {
-                throw new ArgumentException("Employee ID must be a positive integer.", nameof(empId));
+                throw new ArgumentException("Employee ID must be a valid GUID.", nameof(empId));
             }
 
             try
             {
-                return await _dbContext.AddressProofs.FirstOrDefaultAsync(x => x.EmpId == empId);
+                return await _dbContext.AddressProofs.FirstOrDefaultAsync(x => x.Employee.EmpId == empId);
             }
             catch (Exception ex)
             {
@@ -67,11 +71,11 @@ namespace EmployeeManagement.DATA.Services
             }
         }
 
-        public async Task<Employee?> GetEmployeeAsync(int empId)
+        public async Task<Employee?> GetEmployeeAsync(Guid empId)
         {
-            if (empId <= 0)
+            if (empId == Guid.Empty)
             {
-                throw new ArgumentException("Employee ID must be a positive integer.", nameof(empId));
+                throw new ArgumentException("Employee ID must be a valid GUID.", nameof(empId));
             }
             try
             {
@@ -79,17 +83,15 @@ namespace EmployeeManagement.DATA.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while retrieving the address proof.", ex);
+                throw new ApplicationException("An error occurred while retrieving the employee.", ex);
             }
-
-            
         }
 
-        public async Task<bool> DeleteEmployeeAsync(int empId)
+        public async Task<bool> DeleteEmployeeAsync(Guid empId)
         {
-            if (empId <= 0)
+            if (empId == Guid.Empty)
             {
-                throw new ArgumentException("Employee ID must be a positive integer.", nameof(empId));
+                throw new ArgumentException("Employee ID must be a valid GUID.", nameof(empId));
             }
 
             try
@@ -164,11 +166,11 @@ namespace EmployeeManagement.DATA.Services
             }
         }
 
-        public async Task<Name?> GetNameAsync(int id)
+        public async Task<Name?> GetNameAsync(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentException("ID must be a positive integer.", nameof(id));
+                throw new ArgumentException("ID must be a valid GUID.", nameof(id));
             }
 
             try
@@ -178,7 +180,6 @@ namespace EmployeeManagement.DATA.Services
                 if (name == null)
                 {
                     return new Name();
-                    //_logger.LogWarning("No name found for Employee ID {EmpId}.", id);
                 }
 
                 return name;

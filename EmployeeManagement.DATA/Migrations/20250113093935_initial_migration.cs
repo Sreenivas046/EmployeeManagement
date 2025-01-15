@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace EmployeeManagement.DATA.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initial_migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,10 +15,9 @@ namespace EmployeeManagement.DATA.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    EmpId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EmpId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneNumber = table.Column<long>(type: "bigint", nullable: false),
+                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace EmployeeManagement.DATA.Migrations
                 {
                     AddressID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    EmpId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -38,7 +38,8 @@ namespace EmployeeManagement.DATA.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PinCode = table.Column<int>(type: "int", nullable: false)
+                    PinCode = table.Column<int>(type: "int", nullable: false),
+                    EmployeeEmpId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,9 +58,10 @@ namespace EmployeeManagement.DATA.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    EmpId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    DocumentNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DocumentNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeEmpId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +80,7 @@ namespace EmployeeManagement.DATA.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    EmpId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     First = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Middle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Last = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -107,7 +109,8 @@ namespace EmployeeManagement.DATA.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Names_EmpId",
                 table: "Names",
-                column: "EmpId");
+                column: "EmpId",
+                unique: true);
         }
 
         /// <inheritdoc />

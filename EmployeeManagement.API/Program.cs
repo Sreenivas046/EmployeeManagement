@@ -13,18 +13,18 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
-//// DbContext with SQL Server
-//builder.Services.AddDbContext<EmployeeDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeConnection"),
-//    options => options.EnableRetryOnFailure(
-//       maxRetryCount: 5, // Number of retry attempts
-//       maxRetryDelay: TimeSpan.FromSeconds(10), // Maximum delay between retries
-//       errorNumbersToAdd: null // Add specific SQL error codes if needed
-//   )));
-
-//DbContext with Inmemory
+// DbContext with SQL Server
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
-                    options.UseInMemoryDatabase("EmployeeDb"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeConnection"),
+    options => options.EnableRetryOnFailure(
+       maxRetryCount: 5, // Number of retry attempts
+       maxRetryDelay: TimeSpan.FromSeconds(10), // Maximum delay between retries
+       errorNumbersToAdd: null // Add specific SQL error codes if needed
+   )));
+
+////DbContext with Inmemory
+//builder.Services.AddDbContext<EmployeeDbContext>(options =>
+//                    options.UseInMemoryDatabase("EmployeeDb"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,7 +51,7 @@ builder.Services.AddApiVersioning(options =>
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ApiVersionReader = ApiVersionReader.Combine(
         new UrlSegmentApiVersionReader(),  //support url versioning
-        new HeaderApiVersionReader("x-api-version"));       // Support x-api-version header
+        new HeaderApiVersionReader("x-api-version"));    // Support x-api-version header
 });
 builder.Services.AddVersionedApiExplorer(options =>
 {
@@ -74,11 +74,11 @@ if (app.Environment.IsDevelopment())
         options.DefaultModelsExpandDepth(-1);
     });
 }
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<EmployeeDbContext>();
-    EmployeeDataSeeder.Seed(dbContext);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<EmployeeDbContext>();
+//    EmployeeDataSeeder.Seed(dbContext);
+//}
 
 app.Use(async (context, next) =>
 {

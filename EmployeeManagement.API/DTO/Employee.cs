@@ -18,13 +18,13 @@ namespace EmployeeManagement.API.DTO
 
     public class Employee
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Name? Name { get; set; }
         [Required]
         public string? EmailId { get; set; }
         public Address? Address { get; set; }
         public AddressProof? AddressProof { get; set; }
-        public int PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
     }
 
     public class Name

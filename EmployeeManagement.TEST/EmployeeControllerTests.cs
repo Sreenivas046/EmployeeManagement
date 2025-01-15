@@ -20,7 +20,7 @@ namespace EmployeeManagement.TEST
         public async void GetEmployee_ExistingId_ReturnsOkResult()
         {
             // Arrange
-            var empId = 1;
+            var empId = new Guid();
             var employee = new Employee
             {
                 Id = empId,
@@ -65,10 +65,10 @@ namespace EmployeeManagement.TEST
         {
             // Arrange
             //var productId = 1;
-            var lstproducts = new List<Employee>() 
+            var lstproducts = new List<Employee>()
             { new Employee ()
             {
-                Id = 1,
+                Id = new Guid(),
                 Name = new Name() { First = "Sree", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -91,7 +91,7 @@ namespace EmployeeManagement.TEST
             },
             new Employee ()
             {
-                Id = 2,
+                Id = new Guid(),
                 Name = new Name() { First = "Ravi", Middle = "M", Last = "Ravi" },
                 Address = new Address()
                 {
@@ -179,7 +179,7 @@ namespace EmployeeManagement.TEST
             };
             var createdEmployee = new Employee()
             {
-                Id = 1,
+                Id = new Guid(),
                 Name = new Name() { First = "Sree", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -199,7 +199,7 @@ namespace EmployeeManagement.TEST
                 },
                 EmailId = "sree.g@gmail.com",
                 PhoneNumber = 00019827
-            }; 
+            };
 
             _serviceMock.Setup(s => s.AddEmployeeAsync(employeeDto)).ReturnsAsync(createdEmployee);
 
@@ -299,7 +299,7 @@ namespace EmployeeManagement.TEST
                 },
                 EmailId = "sree.g@gmail.com",
                 PhoneNumber = 00019827
-            }; 
+            };
             _serviceMock.Setup(s => s.AddEmployeeAsync(employeeDto)).ThrowsAsync(new Exception("Database error"));
             var result = await _controller.AddEmployee(employeeDto);
 
@@ -316,7 +316,7 @@ namespace EmployeeManagement.TEST
         [Fact]
         public async Task DeleteEmployee_ValidId_ReturnsOkObject()
         {
-            var employeeId = 1;
+            var employeeId = new Guid();
             var ServiceResul = new ServiceResult();
             ServiceResul.Success = true;
 
@@ -335,7 +335,7 @@ namespace EmployeeManagement.TEST
         public async Task DeleteEmployee_InvalidId_ReturnsNotFound()
         {
             // Arrange
-            var employeeId = 99; // Non-existing employee ID
+            var employeeId = new Guid(); // Non-existing employee ID
 
             var ServiceResul = new ServiceResult();
             ServiceResul.Success = false;
@@ -357,7 +357,7 @@ namespace EmployeeManagement.TEST
         public async Task DeleteEmployee_ServiceThrowsException_RetunsInternalServerError()
         {
             // Arrange
-            var employeeId = 1;
+            var employeeId = new Guid();
             _serviceMock.Setup(s => s.DeleteEmployeeAsync(employeeId)).ThrowsAsync(new Exception("Database error"));
 
             // Act & Assert
@@ -397,21 +397,22 @@ namespace EmployeeManagement.TEST
             };
 
             // Act
-            var result = await _controller.UpdateEmployee(2, productDto);
+            var result = await _controller.UpdateEmployee(new Guid(), productDto);
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("ID mismatch.", badRequestResult.Value);
         }
 
-        
+
         [Fact]
         public async Task Update_ReturnsNotFound_WhenProductNotFound()
         {
             // Arrange
+            Guid empId = new Guid();
             var productDto = new Employee()
             {
-                Id = 1,
+                Id = empId,
                 Name = new Name() { First = "Updated Name", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -437,7 +438,7 @@ namespace EmployeeManagement.TEST
                 .ReturnsAsync(new ServiceResult { Success = false, Message = "Employee not found" });
 
             // Act
-            var result = await _controller.UpdateEmployee(1, productDto);
+            var result = await _controller.UpdateEmployee(empId, productDto);
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
@@ -448,9 +449,10 @@ namespace EmployeeManagement.TEST
         public async Task Update_ReturnsOk_WhenUpdateIsSuccessful()
         {
             // Arrange
+            Guid empId = new Guid();
             var productDto = new Employee()
             {
-                Id = 1,
+                Id = empId,
                 Name = new Name() { First = "Updated Name", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -476,13 +478,13 @@ namespace EmployeeManagement.TEST
                 .ReturnsAsync(new ServiceResult { Success = true });
 
             // Act
-            var result = await _controller.UpdateEmployee(1, productDto);
+            var result = await _controller.UpdateEmployee(empId, productDto);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.NotNull(okResult.Value);
         }
 
-        
+
     }
 }
