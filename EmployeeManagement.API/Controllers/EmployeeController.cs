@@ -160,11 +160,5 @@ namespace EmployeeManagement.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-        //---------------------------------------------------------------------------------------------------------
-
-        
     }
 }

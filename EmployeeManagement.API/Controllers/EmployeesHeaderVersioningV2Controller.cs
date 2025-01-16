@@ -1,5 +1,4 @@
 ﻿using EmployeeManagement.API.DTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.API.Controllers
@@ -17,11 +16,6 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
-                ////var employees = await _empRepo.GetEmployeesAsync();
-                //if (employees == null)
-                //{
-                //    return NoContent();
-                //}
                 await Task.CompletedTask;
                 return Ok("List of Employees, Version 2 is in progerss");
             }
@@ -44,12 +38,6 @@ namespace EmployeeManagement.API.Controllers
                     return BadRequest("Employee data is required.");
                 }
                 await Task.CompletedTask;
-                //var employee = await _empRepo.AddEmployeeAsync(emp);
-                //if (employee == null)
-                //{
-                //    return BadRequest("Unfortunatly, Employee not get created.");
-                //}
-                //return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
                 return Ok("Add Employee Version 2 is inprogress");
             }
             catch (Exception ex)
@@ -72,11 +60,6 @@ namespace EmployeeManagement.API.Controllers
                 {
                     return BadRequest("ID mismatch.");
                 }
-                //var result = await _empRepo.UpdateEmployeeAsync(emp);
-                //if (!result.Success)
-                //{
-                //    return NotFound(result.Message);
-                //}
                 await Task.CompletedTask;
                 return Ok("Update Employee Version 2 is inprogress");
 
@@ -98,12 +81,6 @@ namespace EmployeeManagement.API.Controllers
             {
                 if (empId != Guid.Empty)
                 {
-                    //bool result = await _empRepo.DeleteEmployeeAsync(empId);
-                    //if (!result)
-                    //{
-                    //    return NotFound($"Employee with ID {empId} not found.");
-
-                    //}
                     await Task.CompletedTask;
                     return Ok("Delete Employee Version 2 is inprogress");
                 }

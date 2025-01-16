@@ -1,4 +1,6 @@
 ﻿using EmployeeManagement.API.DTO;
+using EmployeeManagement.API.Exception_Classes;
+using EmployeeManagement.API.Exceptions;
 using EmployeeManagement.DATA.Services;
 
 
@@ -33,9 +35,18 @@ namespace EmployeeManagement.API.Services
                 }
                 return empList;
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
-                throw new ApplicationException("An error occurred while fetching employees.", ex);
+
+                throw new ObjectNullException();
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException();
+            }
+            catch (Exception ex) 
+            {
+                throw new ExcuitionException();
             }
         }
 
@@ -60,9 +71,18 @@ namespace EmployeeManagement.API.Services
                     return new Employee();
                 }
             }
+            catch (NullReferenceException ex)
+            {
+
+                throw new ObjectNullException();
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException();
+            }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while fetching the employee.", ex);
+                throw new ExcuitionException();
             }
         }
 
@@ -90,9 +110,18 @@ namespace EmployeeManagement.API.Services
                 return new Employee();
 
             }
+            catch (NullReferenceException ex)
+            {
+
+                throw new ObjectNullException();
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException();
+            }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while adding the employee.", ex);
+                throw new ExcuitionException();
             }
         }
 
@@ -123,6 +152,15 @@ namespace EmployeeManagement.API.Services
                     Success = false,
                     Message = $"Failed to delete employee with ID {empId}. Employee may not exist."
                 };
+            }
+            catch (NullReferenceException ex)
+            {
+
+                throw new ObjectNullException();
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException();
             }
             catch (Exception ex)
             {
@@ -156,6 +194,15 @@ namespace EmployeeManagement.API.Services
                     Success = true,
                     Message = $"Employee updated successfully with EmpID: {emp.Id}"
                 };
+            }
+            catch (NullReferenceException ex)
+            {
+
+                throw new ObjectNullException();
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException();
             }
             catch (Exception ex)
             {

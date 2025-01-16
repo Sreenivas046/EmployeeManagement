@@ -20,7 +20,7 @@ namespace EmployeeManagement.TEST
         public async void GetEmployee_ExistingId_ReturnsOkResult()
         {
             // Arrange
-            var empId = new Guid();
+            var empId = Guid.NewGuid(); 
             var employee = new Employee
             {
                 Id = empId,
@@ -68,7 +68,7 @@ namespace EmployeeManagement.TEST
             var lstproducts = new List<Employee>()
             { new Employee ()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Name = new Name() { First = "Sree", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -91,7 +91,7 @@ namespace EmployeeManagement.TEST
             },
             new Employee ()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Name = new Name() { First = "Ravi", Middle = "M", Last = "Ravi" },
                 Address = new Address()
                 {
@@ -179,7 +179,7 @@ namespace EmployeeManagement.TEST
             };
             var createdEmployee = new Employee()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Name = new Name() { First = "Sree", Middle = "M", Last = "Seenu" },
                 Address = new Address()
                 {
@@ -316,7 +316,7 @@ namespace EmployeeManagement.TEST
         [Fact]
         public async Task DeleteEmployee_ValidId_ReturnsOkObject()
         {
-            var employeeId = new Guid();
+            var employeeId = Guid.NewGuid();
             var ServiceResul = new ServiceResult();
             ServiceResul.Success = true;
 
@@ -335,7 +335,7 @@ namespace EmployeeManagement.TEST
         public async Task DeleteEmployee_InvalidId_ReturnsNotFound()
         {
             // Arrange
-            var employeeId = new Guid(); // Non-existing employee ID
+            var employeeId = Guid.NewGuid(); // Non-existing employee ID
 
             var ServiceResul = new ServiceResult();
             ServiceResul.Success = false;
@@ -357,7 +357,7 @@ namespace EmployeeManagement.TEST
         public async Task DeleteEmployee_ServiceThrowsException_RetunsInternalServerError()
         {
             // Arrange
-            var employeeId = new Guid();
+            var employeeId = Guid.NewGuid();
             _serviceMock.Setup(s => s.DeleteEmployeeAsync(employeeId)).ThrowsAsync(new Exception("Database error"));
 
             // Act & Assert
@@ -397,7 +397,7 @@ namespace EmployeeManagement.TEST
             };
 
             // Act
-            var result = await _controller.UpdateEmployee(new Guid(), productDto);
+            var result = await _controller.UpdateEmployee(Guid.NewGuid(), productDto);
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -409,7 +409,7 @@ namespace EmployeeManagement.TEST
         public async Task Update_ReturnsNotFound_WhenProductNotFound()
         {
             // Arrange
-            Guid empId = new Guid();
+            Guid empId = Guid.NewGuid();
             var productDto = new Employee()
             {
                 Id = empId,
@@ -449,7 +449,7 @@ namespace EmployeeManagement.TEST
         public async Task Update_ReturnsOk_WhenUpdateIsSuccessful()
         {
             // Arrange
-            Guid empId = new Guid();
+            Guid empId = Guid.NewGuid();
             var productDto = new Employee()
             {
                 Id = empId,
